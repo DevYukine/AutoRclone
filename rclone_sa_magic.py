@@ -118,6 +118,8 @@ def parse_args():
     parser.add_argument('-ps', '--password', type=str, default='autorclone',
                         help='the password for crypt')
 
+    parser.add_argument('--salt', type=str, help='the salt for crypt')
+
     args = parser.parse_args()
     return args
 
@@ -194,6 +196,7 @@ def gen_rclone_cfg(args, custom_name):
             # For crypt destination
             if args.crypt:
                 password = obscure(args.password)
+                salt = obscure(args.salt)
                 remote_name = '{}{:03d}'.format('dst', i + 1)
                 try:
                     fp.write('[{}_crypt]\n'
@@ -201,7 +204,8 @@ def gen_rclone_cfg(args, custom_name):
                              'remote = {}:\n'
                              'filename_encryption = standard\n'
                              'password = {}\n'
-                             'directory_name_encryption = true\n\n'.format(remote_name, remote_name, password))
+                             'password2 = {}'
+                             'directory_name_encryption = true\n\n'.format(remote_name, remote_name, password, salt))
                 except:
                     sys.exit("failed to write {} to {}".format(args.destination_id, output_of_config_file))
 
