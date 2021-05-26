@@ -204,7 +204,7 @@ def gen_rclone_cfg(args, custom_name):
                              'remote = {}:\n'
                              'filename_encryption = standard\n'
                              'password = {}\n'
-                             'password2 = {}'
+                             'password2 = {}\n'
                              'directory_name_encryption = true\n\n'.format(remote_name, remote_name, password, salt))
                 except:
                     sys.exit("failed to write {} to {}".format(args.destination_id, output_of_config_file))
